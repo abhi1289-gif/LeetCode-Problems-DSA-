@@ -1,5 +1,7 @@
 class Solution {
 
+    int ans = 0;
+
     public void makeBinary(int nums[], int n){
         int i = 0;
         while(n>0){
@@ -7,7 +9,9 @@ class Solution {
                 nums[i++] += 0;
             }
             else{
-                nums[i++] += 1;
+                nums[i] += 1;
+                ans = Math.max(ans, nums[i]);
+                i++;
             }
             n = n/2;
         }
@@ -18,12 +22,6 @@ class Solution {
         int nums[] = new int[32];
         for(int num: candidates){
             makeBinary(nums, num);
-        }
-
-        int ans = 0;
-
-        for(int i=0; i<32; i++){
-            ans = Math.max(ans, nums[i]);
         }
 
         return ans;
