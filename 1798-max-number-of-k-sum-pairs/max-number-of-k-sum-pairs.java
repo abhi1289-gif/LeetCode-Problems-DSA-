@@ -7,14 +7,9 @@ class Solution {
             int rem = k-num;
 
             if(mapp.containsKey(rem)){
-                if(mapp.get(rem) > 0){
-                    ans++;
-                    if(mapp.get(rem) - 1 == 0) mapp.remove(rem);
-                    else mapp.put(rem, mapp.get(rem)-1);
-                }
-                else{
-                    mapp.put(num, mapp.getOrDefault(num, 0)+1);
-                }
+                ans++;
+                if(mapp.get(rem) - 1 == 0) mapp.remove(rem);
+                else mapp.put(rem, mapp.get(rem)-1);
             }
             else{
                 mapp.put(num, mapp.getOrDefault(num, 0)+1);
