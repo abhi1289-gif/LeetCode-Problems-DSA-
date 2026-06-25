@@ -1,63 +1,74 @@
 class Solution {
 
-    public boolean isPrime(int a){
-        if(a <= 1) return false;
-        if(a == 2) return true;
-        if(a % 2 == 0) return false;
-
-        for(int i = 3; i * i <= a; i += 2){
-            if(a % i == 0){
-                return false;
-            }
+    public class Pair{
+        int node;
+        int time;
+        
+        Pair(int node, int time){
+            this.time = time;
+            this.node = node;
         }
-
-        return true;
     }
 
     public int minJumps(int[] nums) {
         int n = nums.length;
-        if(n == 1) return 0;
-
-        HashMap<Integer, List<Integer>> mapp = new HashMap<>();
         int maxx = -1;
-        for(int num: nums) maxx = Math.max(maxx, num);
-        
-        int dist[] = new int[n];
-        Arrays.fill(dist, -1);
-        dist[0] = 0;
+        for(int num: nums) maxx = Math.max(num, maxx);
 
-        Queue<Integer> qu = new LinkedList<>();
-        qu.add(0);
+        boolean prime[] = new boolean[maxx+1];
+        for(int i=2; i<=maxx; i++) prime[i] = true;
 
-        for(int i = 0; i < n; i++){
-            mapp.computeIfAbsent(nums[i], k -> new ArrayList<>()).add(i);
+        for(int i=2; i*i<=maxx; i++){
+            if(prime[i]){
+                for(int j=i*i; j<=maxx; j+=i){
+                    prime[j] = false;
+                }
+            }
         }
+
+        HashMap<Integer, List<Integer>> pos = new HashMap<>();
+        for(int i=0; i<n; i++){
+            if(!pos.containsKey(nums[i])) pos.put(nums[i], new ArrayList<>());
+            pos.get(nums[i]).add(i);
+        }
+
+        Queue<Pair> qu = new LinkedList<>();
+        qu.add(new Pair(0, 0));
+        boolean visited[] = new boolean[n];
+        visited[0] = true;
 
         while(qu.size() > 0){
-            int curr = qu.poll();
+            Pair curr = qu.poll();
+            int i = curr.node;
+            int t = curr.time;
 
-            List<Integer> canGo = new ArrayList<>();
+            if(i == n-1) return t;
 
-            if(curr-1 >= 0) canGo.add(curr-1);
-            if(curr+1 < n) canGo.add(curr+1);
-
-            if(isPrime(nums[curr])){
-                int p = nums[curr];
-                for(int i=p; i<=maxx; i+=p){
-                    if(mapp.containsKey(i)){
-                        canGo.addAll(mapp.get(i));
-                        mapp.remove(i);
-                    }
-                }
+            if(i-1>=0 && !visited[i-1]){
+                qu.add(new Pair(i-1, t+1));
+                visited[i-1] = true;
             }
-            for(int nxt: canGo){
-                if(dist[nxt] == -1){
-                    dist[nxt] = dist[curr]+1;
-                    if(nxt == n-1) return dist[nxt];
-                    qu.add(nxt);
+            if(i+1<n && !visited[i+1]){
+                qu.add(new Pair(i+1, t+1));
+                visited[i+1] = true;
+            }
+
+            if(prime[nums[i]]){
+                int p = nums[i];
+                for(int m=p; m<=maxx; m+=p){
+                    if (!pos.containsKey(m)) continue;
+
+                    for(int j: pos.get(m)){
+                        if(!visited[j]){
+                            qu.add(new Pair(j, t+1));
+                            visited[j] = true;
+                        }
+                    }
+                    pos.get(m).clear();
                 }
+                prime[p] = false;
             }
         }
-        return dist[n-1];
+        return -1;
     }
-}   
+}
