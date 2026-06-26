@@ -1,15 +1,15 @@
 class Solution {
 
     HashMap<Integer, List<Integer>> graph;
-    int maxx = 0;
+    int temp;
 
-    public void dfs(int src, HashSet<Integer> visited){
-        maxx += 1;
+    public void travel(int src, HashSet<Integer> visited){
+        temp++;
         visited.add(src);
 
         for(int nebr: graph.get(src)){
             if(!visited.contains(nebr)){
-                dfs(nebr, visited);
+                travel(nebr, visited);
             }
         }
     }
@@ -18,13 +18,13 @@ class Solution {
         graph = new HashMap<>();
 
         for(int num: nums){
-            if(graph.containsKey(num)) continue;
             graph.put(num, new ArrayList<>());
 
             if(graph.containsKey(num-1)){
                 graph.get(num-1).add(num);
                 graph.get(num).add(num-1);
             }
+
             if(graph.containsKey(num+1)){
                 graph.get(num+1).add(num);
                 graph.get(num).add(num+1);
@@ -34,12 +34,12 @@ class Solution {
         HashSet<Integer> visited = new HashSet<>();
         int ans = 0;
 
-        for(int i=0; i<nums.length; i++){
-            if(!visited.contains(nums[i])){
-                maxx = 0;
-                dfs(nums[i], visited);
-                ans = Math.max(ans, maxx);
+        for(int num: nums){
+            temp = 0;
+            if(!visited.contains(num)){
+                travel(num, visited);
             }
+            ans = Math.max(ans, temp);
         }
 
         return ans;
