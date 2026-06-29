@@ -17,10 +17,22 @@ class Solution {
     }
 
     public int countNumbersWithUniqueDigits(int n) {
-        boolean visited[] = new boolean[10];
-        ans = 1;
+        // boolean visited[] = new boolean[10];
+        // ans = 1;
+        // if(n == 0) return 1;
+        // travel(0, 0, visited, n);
+        // return ans;
+
         if(n == 0) return 1;
-        travel(0, 0, visited, n);
+        int ans = 1;
+        int curr = 9;
+        int avail = 9;
+
+        for(int i=1; i<=n; i++){
+            ans += curr;
+            curr = curr*avail;
+            avail--;
+        }
         return ans;
     }
 }
