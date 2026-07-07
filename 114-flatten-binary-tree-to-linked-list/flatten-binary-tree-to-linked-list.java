@@ -15,17 +15,28 @@
  */
 class Solution {
 
-    TreeNode prev = null;
+    TreeNode dummy = new TreeNode(0);
+    TreeNode temp = dummy;
+
+    public void travel(TreeNode root){
+        if(root == null) return;
+
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+
+        temp.right = root;
+        temp.left = null;
+        temp = root;
+
+        travel(left);
+        travel(right);
+    }
 
     public void flatten(TreeNode root) {
         if(root == null) return;
 
-        flatten(root.right);
-        flatten(root.left);
+        travel(root);
 
-        root.left = null;
-        root.right = prev;
-
-        prev = root;
+        temp.left = null;
     }
 }
