@@ -1,25 +1,46 @@
 class Solution {
+
+    public class Trie{
+        char ch;
+        HashMap<Character, Trie> mapp = new HashMap<>();
+
+        Trie(char ch){
+            this.ch = ch;
+            mapp.clear();
+        }
+    }
+
+    HashMap<Trie, Integer> siz = new HashMap<>();
+
+    Trie root = new Trie('0');
+
     public int minimumLengthEncoding(String[] words) {
-        List<String> nums = new ArrayList<>();
-        Arrays.sort(words, (a, b)-> b.length() - a.length());
+        for(String word: words){
+            Trie temp = root;
 
-        for(int i=0; i<words.length; i++) nums.add(words[i]);
+            for(int i=word.length()-1; i>=0; i--){
+                char ch = word.charAt(i);
 
-        for(int i=0; i<nums.size(); i++){
-            String num = nums.get(i);
-            for(int j=i+1; j<nums.size(); j++){
-                if (num.endsWith(nums.get(j))) {
-                    nums.remove(j);
-                    j--;
+                if(!temp.mapp.containsKey(ch)){
+                    Trie a = new Trie(ch);
+                    temp.mapp.put(ch, a);
                 }
+
+                temp = temp.mapp.get(ch);
+
+                if(siz.containsKey(temp)) siz.remove(temp);
+            }
+
+            if (temp.mapp.isEmpty()) {
+                siz.put(temp, word.length());
             }
         }
 
         int ans = 0;
-        for(String s: nums){
-            ans += s.length() + 1;
-        }
+
+        for(int values: siz.values()) ans += values+1;
 
         return ans;
-    }
+    }   
+
 }
