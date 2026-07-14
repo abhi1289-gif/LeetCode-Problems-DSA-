@@ -1,4 +1,25 @@
 class Solution {
+
+    public int travel(int nums[], int a){
+        int i = 0;
+        int j = nums.length-1;
+        int ans = nums.length;
+
+        while(i <= j){
+            int mid = i + (j-i)/2;
+
+            if(nums[mid]<=a){
+                i = mid+1;
+            }
+            else{
+                ans = mid;
+                j = mid-1;
+            }
+        }
+
+        return nums.length-ans;
+    }
+
     public int[] numSmallerByFrequency(String[] queries, String[] words) {
         int nums[] = new int[words.length];
         HashMap<Character, Integer> mapp = new HashMap<>();
@@ -19,6 +40,8 @@ class Solution {
             nums[i] = mapp.get(maxx);
         }
 
+        Arrays.sort(nums);
+
         int ans[] = new int[queries.length];
 
         for(int i=0; i<queries.length; i++){
@@ -36,13 +59,7 @@ class Solution {
             }
             int a = mapp.get(maxx);
 
-            int temp = 0;
-
-            for(int j=0; j<nums.length; j++){
-                if(a < nums[j]) temp++;
-            }
-
-            ans[i] = temp;
+            ans[i] = travel(nums, a);
         }
 
         return ans;
