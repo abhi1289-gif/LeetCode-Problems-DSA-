@@ -11,13 +11,31 @@ class Solution {
 
         Arrays.sort(nums, (a, b)-> a[0]-b[0]);
 
-        for(int i=0; i<worker.length; i++){
-            int temp = 0;
-            for(int j=0; j<n; j++){
-                if(nums[j][0] > worker[i]) break;
-                temp = Math.max(temp, nums[j][1]);
+        for(int i=1; i<n; i++){
+            nums[i][1] = Math.max(nums[i][1], nums[i-1][1]);
+        }
+
+        
+
+        for(int k=0; k<worker.length; k++){
+            int num = worker[k];
+            int i = 0;
+            int j = n-1;
+            int temp = -1;
+
+            while(i<=j){
+                int mid = i + (j-i)/2;
+
+                if(nums[mid][0]<=num){
+                    temp = mid;
+                    i = mid+1;
+                }
+                else{
+                    j = mid-1;
+                }
             }
-            ans += temp;
+
+            if(temp != -1) ans += nums[temp][1];
         }
 
         return ans;
