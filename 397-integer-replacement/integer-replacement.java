@@ -1,28 +1,30 @@
 class Solution {
 
     int ans;
+    HashMap<Long, Integer> mapp;
 
-    public void travel(long n, int count){
+    public int travel(long n){
         if(n == 1){
-            ans = Math.min(ans, count);
-            return;
+            return 0;
         }
 
-        count++;
+        if(mapp.containsKey(n)) return mapp.get(n);
 
         if(n%2 == 0){
-            travel(n/2, count);
+            int a = 1 + travel(n/2);
+            mapp.put(n, a);
+            return a;
         }
         else{
-            travel(n+1, count);
-            travel(n-1, count);
+            int a = 1 + travel(n+1);
+            int b = 1 + travel(n-1);
+            mapp.put(n, Math.min(a, b));
+            return Math.min(a, b);
         }
     }
 
     public int integerReplacement(int n) {
-        ans = Integer.MAX_VALUE;
-
-        travel((long)n, 0);
-        return ans;
+        mapp = new HashMap<>();
+        return travel((long)n);
     }
 }
