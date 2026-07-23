@@ -14,21 +14,14 @@ class Solution {
         Stack<Pair> st = new Stack<>();
 
         for(char ch: s.toCharArray()){
-            if(st.size() == 0){
-                st.add(new Pair(ch, 1));
+            if(st.size() > 0 && st.peek().ch == ch){
+                Pair temp = st.pop();
+                int a = temp.num+1;
+                if(a == k) continue;
+                st.add(new Pair(ch, a));
             }
             else{
-                Pair prev = st.pop();
-                if(prev.ch != ch){
-                    st.add(prev);
-                    st.add(new Pair(ch, 1));
-                }
-                else{
-                    int temp = prev.num;
-                    temp += 1;
-                    if(temp == k) continue;
-                    else st.add(new Pair(ch, temp));
-                }
+                st.add(new Pair(ch, 1));
             }
         }
 
@@ -36,16 +29,14 @@ class Solution {
 
         while(st.size() > 0){
             Pair curr = st.pop();
-            int t = curr.num;
-
-            while(t > 0){
-                t--;
+            int a = curr.num;
+            while(a > 0){
                 ans.append(curr.ch);
+                a--;
             }
         }
 
         ans.reverse();
-
         return ans.toString();
     }
 }
