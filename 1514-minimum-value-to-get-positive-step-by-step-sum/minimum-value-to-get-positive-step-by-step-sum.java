@@ -1,18 +1,27 @@
 class Solution {
     public int minStartValue(int[] nums) {
-        int a = 0;
-        while(true){
-            int ans = a+1;
-            a++;
-            boolean flag = true;
-            for(int num: nums){
-                ans += num;
-                if(ans < 1){
-                    flag = false;
-                    break;
-                }
-            }
-            if(flag) return a;
+        // int a = 0;
+        // while(true){
+        //     int ans = a+1;
+        //     a++;
+        //     boolean flag = true;
+        //     for(int num: nums){
+        //         ans += num;
+        //         if(ans < 1){
+        //             flag = false;
+        //             break;
+        //         }
+        //     }
+        //     if(flag) return a;
+        // }
+
+        int ans = 0;
+        int sum = 0;
+        for(int num: nums){
+            sum += num;
+            ans = Math.min(ans, sum);
         }
+
+        return 1 - ans;
     }
 }
