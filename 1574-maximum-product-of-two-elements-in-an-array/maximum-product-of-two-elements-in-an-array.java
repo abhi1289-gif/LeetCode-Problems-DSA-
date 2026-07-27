@@ -1,8 +1,8 @@
 class Solution {
     public int maxProduct(int[] nums) {
-        int a = Integer.MIN_VALUE;
-        int b = Integer.MIN_VALUE;
-        
+        int a = 0;
+        int b = 0;
+
         for(int num: nums){
             if(num > b){
                 a = b;
