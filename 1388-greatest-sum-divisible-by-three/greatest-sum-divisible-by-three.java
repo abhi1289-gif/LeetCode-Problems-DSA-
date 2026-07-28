@@ -1,54 +1,32 @@
 class Solution {
+    
+    int dp[][];
+
+    public int travel(int idx, int rem, int nums[]){
+        if(idx == nums.length) return rem == 0 ? 0 : Integer.MIN_VALUE;
+
+        if(dp[idx][rem] != -1) return dp[idx][rem];
+
+        int a = travel(idx+1, rem, nums);
+
+
+        int b = travel(idx+1, (rem+nums[idx])%3, nums);
+        if(b != Integer.MIN_VALUE){
+            b += nums[idx];
+        }
+
+        return dp[idx][rem] = Math.max(a, b);
+    }
+
     public int maxSumDivThree(int[] nums) {
-        List<Integer> o = new ArrayList<>();
-        List<Integer> t = new ArrayList<>();
-        int sum = 0;
+        dp = new int[nums.length][3];
 
-        for(int num: nums){
-            int a = num%3;
-            sum += num;
-
-            if(a == 1) o.add(num);
-            else if (a == 2) t.add(num);
+        for(int i=0; i<nums.length; i++){
+            dp[i][0] = -1;
+            dp[i][1] = -1;
+            dp[i][2] = -1;
         }
 
-        Collections.sort(o);
-        Collections.sort(t);
-        
-        int a = sum%3;
-
-        if(a == 0) return sum;
-        else if(a == 1){
-            if(t.size() > 1 && o.size()>0){
-                int m = Math.min(o.get(0), t.get(0)+t.get(1));
-                sum -= m;
-                return sum;
-            }
-            else if(t.size() > 1){
-                sum -= (t.get(0)+t.get(1));
-                return sum;
-            }
-            else if (o.size() > 0){
-                sum -= o.get(0);
-                return sum;
-            }
-            return 0;
-        }
-        else{
-            if(t.size() > 0 && o.size()>1){
-                int m = Math.min(t.get(0), o.get(0)+o.get(1));
-                sum -= m;
-                return sum;
-            }
-            else if(t.size() > 0){
-                sum -= t.get(0);
-                return sum;
-            }
-            else if(o.size()>1){
-                sum -= (o.get(0)+o.get(1));
-                return sum;
-            }
-            return 0;
-        }
+        return travel(0, 0, nums);
     }
 }
