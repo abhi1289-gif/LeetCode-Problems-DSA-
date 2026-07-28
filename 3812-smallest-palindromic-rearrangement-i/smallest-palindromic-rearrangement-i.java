@@ -2,26 +2,24 @@ class Solution {
     public String smallestPalindrome(String s) {
         StringBuilder ans = new StringBuilder();
 
-        HashMap<Character, Integer> mapp = new HashMap<>();
+        int nums[] = new int[26];
 
         for(char ch: s.toCharArray()){
-            mapp.put(ch, mapp.getOrDefault(ch, 0)+1);
+            nums[(int)(ch-'a')]++;
         }
 
-        List<Character> list = new ArrayList<>();
-        for(char key: mapp.keySet()){
-            list.add(key);
-        }
-
-        Collections.sort(list);
         char last = '#';
 
-        for(char ch: list){
-            if(mapp.get(ch)%2 != 0){
-                mapp.put(ch, mapp.get(ch) - 1);
+        for(int i=0; i<26; i++){
+            if(nums[i] == 0) continue;
+            char ch = (char)('a' + i);
+
+            if(nums[i]%2 != 0){
                 last = ch;
+                nums[i]--;
             }
-            int a = mapp.get(ch)/2;
+
+            int a = nums[i]/2;
             while(a > 0){
                 ans.append(ch);
                 a--;
