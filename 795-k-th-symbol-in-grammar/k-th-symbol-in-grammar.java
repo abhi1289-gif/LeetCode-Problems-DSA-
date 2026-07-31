@@ -3,7 +3,7 @@ class Solution {
         int ans = 0;
         int flip = 0;
         while (n > 1) {
-            int half = 1 << (n - 2);
+            int half = (int)Math.pow(2, n - 2);
 
             if (k > half) {
                 flip++;
