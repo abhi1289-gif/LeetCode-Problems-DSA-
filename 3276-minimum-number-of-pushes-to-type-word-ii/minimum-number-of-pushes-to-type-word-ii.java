@@ -1,21 +1,17 @@
 class Solution {
     public int minimumPushes(String word) {
-        HashMap<Character, Integer> mapp = new HashMap<>();
-        for(char ch: word.toCharArray()) mapp.put(ch, mapp.getOrDefault(ch, 0)+1);
+        int nums[] = new int[26];
+        for(char ch: word.toCharArray()) nums[(int)(ch-'a')]++;
 
-        List<Integer> nums = new ArrayList<>();
-        for(char key: mapp.keySet()){
-           nums.add(mapp.get(key)); 
-        }
-
-        Collections.sort(nums, (a, b)->b-a);
+        Arrays.sort(nums);
 
         int ans = 0;
         int t = 0;
         int a = 1;
 
-        for(int num: nums){
-            ans += a*num;
+        for(int i=25; i>=0; i--){
+            if(nums[i] == 0) break;
+            ans += a*nums[i];
             t++;
             
             if(t == 8){
