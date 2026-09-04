@@ -1,19 +1,22 @@
 class Solution {
-    public int secondsToRemoveOccurrences(String s) {
+    public int secondsToRemoveOccurrences(String a) {
+        StringBuilder s = new StringBuilder(a);
         int ans = 0;
-        int z = 0;
-        if(s.charAt(0) == '0') z = 1;
-        for(int i=1; i<s.length(); i++){
-            if(s.charAt(i) == '0'){
-                z++;
-            } 
-            else{
-                if(z > 0){
-                    ans = Math.max(ans + 1, z);
+        while(true){
+            boolean canBreak = true;
+            for(int i=0; i<s.length()-1; i++){
+                if(s.charAt(i) == '0' && s.charAt(i+1) == '1'){
+                    s.setCharAt(i, '1');
+                    s.setCharAt(i+1, '0');
+                    canBreak = false;
+                    
+                    i++;
                 }
             }
+            if(canBreak) break;
+            ans++;
         }
-        
+            
         return ans;
     }
 }
