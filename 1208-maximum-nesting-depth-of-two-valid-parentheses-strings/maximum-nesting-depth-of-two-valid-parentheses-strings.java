@@ -5,15 +5,15 @@ class Solution {
         int d = 0;
         for(int i=0; i<s.length(); i++){
             char ch = s.charAt(i);
-            if(ch == '('){
-                d++;
-                depth[i] = d%2;
-            }
-            if(ch == ')'){
-                depth[i] = d%2;
-                d--;
-            }
+            if(ch == '(') d++;
+            depth[i] = d;
+            if(ch == ')') d--;
         }
+
+        for(int i=0; i<s.length(); i++){
+            depth[i] = depth[i]%2;
+        }
+
         return depth;
     }
 }
